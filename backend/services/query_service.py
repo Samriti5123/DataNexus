@@ -4,6 +4,23 @@ import numpy as np
 from typing import Dict, Any, List, Optional
 from backend.services.visualize_service import VisualizeService
 
+# Lets "top five orders" work the same as "top 5 orders"
+_WORD_TO_NUM = {
+    'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5',
+    'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'ten': '10',
+    'eleven': '11', 'twelve': '12', 'thirteen': '13', 'fourteen': '14',
+    'fifteen': '15', 'sixteen': '16', 'seventeen': '17', 'eighteen': '18',
+    'nineteen': '19', 'twenty': '20'
+}
+
+
+def _normalize_number_words(text: str) -> str:
+    def replace(match):
+        return _WORD_TO_NUM[match.group(0)]
+    pattern = r'\b(' + '|'.join(_WORD_TO_NUM.keys()) + r')\b'
+    return re.sub(pattern, replace, text)
+
+
 class QueryService:
 
     @classmethod
@@ -11,6 +28,7 @@ class QueryService:
         q = query_str.strip().lower()
         if not q:
             return {"error": "Query string cannot be empty."}
+        q = _normalize_number_words(q)
 
         cols = list(df.columns)
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
@@ -18,6 +36,7 @@ class QueryService:
 
         # Helper to find closest matching column in query
         def find_column_in_text(text: str, candidates: List[str]) -> Optional[str]:
+
             for c in candidates:
                 c_clean = c.lower().replace('_', ' ')
                 if c_clean in text or c.lower() in text:
