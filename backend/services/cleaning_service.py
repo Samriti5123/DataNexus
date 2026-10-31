@@ -366,7 +366,7 @@ class CleaningService:
     def generate_python_script(cls, action_history: List[str]) -> str:
         lines = [
             "# ========================================================",
-            "# DataLens - Automated Data Cleaning & ETL Pipeline Script",
+            "# DataNexus - Automated Data Cleaning & ETL Pipeline Script",
             "# Generated automatically from applied transformation steps",
             "# ========================================================",
             "",
@@ -374,7 +374,7 @@ class CleaningService:
             "import numpy as np",
             "",
             "def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:",
-            "    \"\"\"Applies all cleaning and transformation steps recorded in DataLens.\"\"\"",
+            "    \"\"\"Applies all cleaning and transformation steps recorded in DataNexus.\"\"\"",
             "    cleaned_df = df.copy()",
             "    cleaned_df.columns = [str(c).strip() for c in cleaned_df.columns]",
             ""

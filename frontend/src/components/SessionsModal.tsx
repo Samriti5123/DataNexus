@@ -34,8 +34,8 @@ export const SessionsModal: React.FC<SessionsModalProps> = ({
         
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center space-x-2">
-            <Database className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-sm font-bold text-white">Active Dataset Sessions</h2>
+            <Database className="w-5 h-5 text-amber-400" />
+            <h2 className="text-sm font-bold text-white">Loaded Data Sessions</h2>
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-white">
             <X className="w-5 h-5" />
@@ -58,23 +58,23 @@ export const SessionsModal: React.FC<SessionsModalProps> = ({
                   });
                   onClose();
                 }}
-                className={`p-3.5 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
+                className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${
                   isCurrent
-                    ? 'bg-emerald-950/30 border-emerald-500/50'
+                    ? 'bg-teal-950/40 border-teal-500/50'
                     : 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
                 }`}
               >
                 <div>
                   <div className="text-xs font-bold text-white flex items-center space-x-2">
                     <span>{s.name}</span>
-                    {isCurrent && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                    {isCurrent && <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />}
                   </div>
                   <div className="text-[11px] text-slate-400 mt-0.5">
                     {s.rows.toLocaleString()} rows • {s.columns} columns • {s.steps_applied} transformations applied
                   </div>
                 </div>
 
-                <span className="text-xs text-emerald-400 font-semibold">
+                <span className="text-xs text-amber-400 font-semibold">
                   {isCurrent ? 'Current' : 'Switch'}
                 </span>
               </div>

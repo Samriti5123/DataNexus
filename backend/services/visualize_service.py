@@ -9,32 +9,74 @@ def _is_number(value) -> bool:
         return False
     return isinstance(value, (int, float, np.integer, np.floating))
 
-# Distinct modern color palette for charts
+# Distinct modern color palettes for charts matching DataNexus Blue/Cyan theme
 CHART_PALETTES = {
-    'modern_emerald': [
-        'rgba(16, 185, 129, 0.85)', 'rgba(59, 130, 246, 0.85)', 'rgba(245, 158, 11, 0.85)',
-        'rgba(239, 68, 68, 0.85)', 'rgba(168, 85, 247, 0.85)', 'rgba(236, 72, 153, 0.85)',
-        'rgba(20, 184, 166, 0.85)', 'rgba(249, 115, 22, 0.85)', 'rgba(99, 102, 241, 0.85)'
+    'modern_blue': [
+        'rgba(59, 130, 246, 0.85)',   # Primary Blue (#3B82F6)
+        'rgba(6, 182, 212, 0.85)',    # Secondary Cyan (#06B6D4)
+        'rgba(99, 102, 241, 0.85)',   # Indigo
+        'rgba(14, 165, 233, 0.85)',   # Sky Blue
+        'rgba(139, 92, 246, 0.85)',   # Violet
+        'rgba(20, 184, 166, 0.85)',   # Teal
+        'rgba(56, 189, 248, 0.85)',   # Light Sky
+        'rgba(168, 85, 247, 0.85)',   # Purple
+        'rgba(37, 99, 235, 0.85)'     # Deep Blue
+    ],
+    'cyan_glow': [
+        'rgba(6, 182, 212, 0.85)',    # Cyan
+        'rgba(59, 130, 246, 0.85)',   # Blue
+        'rgba(14, 165, 233, 0.85)',   # Sky
+        'rgba(20, 184, 166, 0.85)',   # Teal
+        'rgba(99, 102, 241, 0.85)',   # Indigo
+        'rgba(56, 189, 248, 0.85)',   # Light Sky
+        'rgba(129, 140, 248, 0.85)',  # Soft Indigo
+        'rgba(45, 212, 191, 0.85)',   # Mint
+        'rgba(30, 64, 175, 0.85)'     # Navy
     ],
     'cyber_indigo': [
-        'rgba(99, 102, 241, 0.85)', 'rgba(14, 165, 233, 0.85)', 'rgba(244, 63, 94, 0.85)',
-        'rgba(139, 92, 246, 0.85)', 'rgba(16, 185, 129, 0.85)', 'rgba(234, 179, 8, 0.85)',
-        'rgba(249, 115, 22, 0.85)', 'rgba(217, 70, 239, 0.85)', 'rgba(6, 182, 212, 0.85)'
+        'rgba(99, 102, 241, 0.85)', 'rgba(59, 130, 246, 0.85)', 'rgba(6, 182, 212, 0.85)',
+        'rgba(14, 165, 233, 0.85)', 'rgba(139, 92, 246, 0.85)', 'rgba(217, 70, 239, 0.85)',
+        'rgba(244, 63, 94, 0.85)', 'rgba(234, 179, 8, 0.85)', 'rgba(20, 184, 166, 0.85)'
     ],
     'sunset_warmth': [
-        'rgba(249, 115, 22, 0.85)', 'rgba(245, 158, 11, 0.85)', 'rgba(239, 68, 68, 0.85)',
-        'rgba(217, 70, 239, 0.85)', 'rgba(139, 92, 246, 0.85)', 'rgba(59, 130, 246, 0.85)',
-        'rgba(16, 185, 129, 0.85)', 'rgba(20, 184, 166, 0.85)', 'rgba(168, 85, 247, 0.85)'
+        'rgba(59, 130, 246, 0.85)', 'rgba(249, 115, 22, 0.85)', 'rgba(6, 182, 212, 0.85)',
+        'rgba(245, 158, 11, 0.85)', 'rgba(239, 68, 68, 0.85)', 'rgba(139, 92, 246, 0.85)',
+        'rgba(99, 102, 241, 0.85)', 'rgba(217, 70, 239, 0.85)', 'rgba(20, 184, 166, 0.85)'
     ]
 }
+# Alias for backwards compatibility
+CHART_PALETTES['modern_emerald'] = CHART_PALETTES['modern_blue']
 
 class VisualizeService:
+
+    @staticmethod
+    def _is_irrelevant_column(col_name: str, series: pd.Series, total_rows: int) -> bool:
+        """Identify columns that are constant, ID fields, or non-informative for analysis."""
+        if series.nunique(dropna=True) <= 1:
+            return True
+        if pd.api.types.is_numeric_dtype(series):
+            try:
+                if series.std(skipna=True) == 0:
+                    return True
+            except Exception:
+                pass
+        col_clean = col_name.strip().lower().replace('_', '')
+        if col_clean in ('employeecount', 'standardhours', 'over18'):
+            return True
+        if col_clean in ('employeenumber', 'employeeid', 'id', 'recordid'):
+            return True
+        if series.nunique(dropna=True) >= total_rows * 0.98 and total_rows > 20:
+            return True
+        return False
 
     @classmethod
     def get_chart_options(cls, df: pd.DataFrame) -> Dict[str, Any]:
         """Provides available columns classified by numeric, categorical, datetime for the visualizer UI."""
-        numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-        cat_cols = df.select_dtypes(include=['object', 'category', 'string', 'bool']).columns.tolist()
+        total_rows = len(df)
+        numeric_cols = [c for c in df.select_dtypes(include=[np.number]).columns.tolist()
+                        if not cls._is_irrelevant_column(c, df[c], total_rows)]
+        cat_cols = [c for c in df.select_dtypes(include=['object', 'category', 'string', 'bool']).columns.tolist()
+                    if not cls._is_irrelevant_column(c, df[c], total_rows)]
         date_cols = df.select_dtypes(include=['datetime', 'datetime64']).columns.tolist()
 
         # Check if any string column is convertible to date
@@ -77,9 +119,9 @@ class VisualizeService:
         aggregation: str = 'sum',
         sort_by: str = 'none',  # 'none', 'value_desc', 'value_asc', 'label_asc'
         limit: int = 15,
-        palette_name: str = 'modern_emerald'
+        palette_name: str = 'modern_blue'
     ) -> Dict[str, Any]:
-        palette = CHART_PALETTES.get(palette_name, CHART_PALETTES['modern_emerald'])
+        palette = CHART_PALETTES.get(palette_name, CHART_PALETTES['modern_blue'])
         
         if x_axis not in df.columns:
             x_axis = df.columns[0]

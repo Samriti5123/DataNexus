@@ -66,7 +66,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
   const [groupBy, setGroupBy] = useState('');
   const [aggregation, setAggregation] = useState('sum');
   const [sortBy, setSortBy] = useState('value_desc');
-  const [palette, setPalette] = useState('modern_emerald');
+  const [palette, setPalette] = useState('modern_blue');
   const [limit, setLimit] = useState(12);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
     if (chartRef.current) {
       const base64Image = chartRef.current.toBase64Image();
       const link = document.createElement('a');
-      link.download = `DataLens_${chartType}_${xAxis}.png`;
+      link.download = `DataNexus_${chartType}_${xAxis}.png`;
       link.href = base64Image;
       link.click();
       setToast({ type: 'success', message: 'Chart downloaded as high-resolution PNG.' });
@@ -207,12 +207,12 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
               const b = chartData.box_stats?.[i];
               if (!b) return null;
               return (
-                <div key={i} className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                <div key={i} className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
                   <div className="font-bold text-white text-sm">{lbl}</div>
                   <div className="space-y-1 text-xs text-slate-300 font-mono">
                     <div className="flex justify-between"><span>Max:</span><strong>{b.max}</strong></div>
-                    <div className="flex justify-between"><span>Q3 (75%):</span><strong className="text-emerald-400">{b.q3}</strong></div>
-                    <div className="flex justify-between"><span>Median:</span><strong className="text-cyan-400">{b.median}</strong></div>
+                    <div className="flex justify-between"><span>Q3 (75%):</span><strong className="text-amber-400">{b.q3}</strong></div>
+                    <div className="flex justify-between"><span>Median:</span><strong className="text-amber-400">{b.median}</strong></div>
                     <div className="flex justify-between"><span>Q1 (25%):</span><strong className="text-purple-400">{b.q1}</strong></div>
                     <div className="flex justify-between"><span>Min:</span><strong>{b.min}</strong></div>
                     <div className="flex justify-between pt-1 border-t border-slate-800"><span>Mean:</span><strong>{b.mean}</strong></div>
@@ -233,11 +233,11 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-2">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-amber-400 text-xs font-semibold mb-2">
             <PieChart className="w-3.5 h-3.5" />
-            <span>Stage 4: Interactive Chart Builder</span>
+            <span>Stage 4: Build Your Charts</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Multi-Dimensional Visualization Studio</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Multi-View Chart Studio</h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Build bar, multi-line, scatter, boxplot and pie charts with dynamic aggregations and high-resolution exports.
           </p>
@@ -246,7 +246,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
         <div className="flex items-center space-x-3">
           <button
             onClick={handleDownloadPng}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-200 hover:text-emerald-400 transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-200 hover:text-amber-400 transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Save PNG</span>
@@ -254,9 +254,9 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
 
           <button
             onClick={onProceedToInsights}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-900/30 transition-all hover:scale-[1.02]"
+            className="flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-teal-600 to-amber-600 hover:from-teal-500 hover:to-amber-500 text-white text-xs font-bold shadow-md shadow-teal-900/40 transition-all hover:scale-[1.02]"
           >
-            <span>Proceed to AI Insights</span>
+            <span>Continue to HR Insights</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -268,8 +268,8 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
         {/* Controls Sidebar (Left) */}
         <div className="lg:col-span-4 glass-panel rounded-2xl p-5 space-y-4">
           <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-            <Sliders className="w-4 h-4 text-emerald-400" />
-            <span>Chart Parameters</span>
+            <Sliders className="w-4 h-4 text-amber-400" />
+            <span>Chart Settings</span>
           </h2>
 
           {/* Chart Type Gallery */}
@@ -293,7 +293,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
                   onClick={() => setChartType(t.id)}
                   className={`py-1.5 px-2 rounded-lg font-medium transition-colors ${
                     chartType === t.id
-                      ? 'bg-emerald-600 text-white font-bold shadow'
+                      ? 'bg-teal-600 text-white font-bold shadow-md shadow-teal-900/30'
                       : 'bg-slate-900 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -395,7 +395,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
                 step="1"
                 value={limit}
                 onChange={(e) => setLimit(parseInt(e.target.value))}
-                className="w-full accent-emerald-500 mt-2"
+                className="w-full accent-teal-500 mt-2"
               />
             </div>
           </div>
@@ -405,7 +405,8 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
             <label className="block text-xs font-semibold text-slate-300 mb-1">Color Palette Theme</label>
             <div className="grid grid-cols-3 gap-1.5 text-[10px]">
               {[
-                { id: 'modern_emerald', label: 'Emerald' },
+                { id: 'modern_blue', label: 'Blue Nexus' },
+                { id: 'cyan_glow', label: 'Cyan Glow' },
                 { id: 'cyber_indigo', label: 'Cyber Indigo' },
                 { id: 'sunset_warmth', label: 'Sunset' }
               ].map(p => (
@@ -414,7 +415,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
                   onClick={() => setPalette(p.id)}
                   className={`py-1.5 rounded-lg font-semibold border ${
                     palette === p.id
-                      ? 'bg-slate-800 border-emerald-500 text-emerald-400'
+                      ? 'bg-slate-800 border-teal-500 text-amber-400'
                       : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -431,9 +432,9 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
           
           <div className="relative w-full h-[440px] flex items-center justify-center">
             {loading ? (
-              <div className="flex items-center space-x-2 text-emerald-400 text-sm animate-pulse">
+              <div className="flex items-center space-x-2 text-amber-400 text-sm animate-pulse">
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                <span>Rendering dynamic chart...</span>
+                <span>Drawing your chart...</span>
               </div>
             ) : (
               renderChart()
@@ -442,7 +443,7 @@ export const VisualizeView: React.FC<VisualizeViewProps> = ({
 
           <div className="flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-800/80">
             <span>Powered by Chart.js 4 & Canvas Engine</span>
-            <span>Tip: Click on legends to toggle series visibility</span>
+            <span>Tip: click a legend item to show or hide that series</span>
           </div>
 
         </div>

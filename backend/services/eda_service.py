@@ -146,9 +146,33 @@ class EdaService:
 
         return profiles
 
+    @staticmethod
+    def _is_irrelevant_column(col_name: str, series: pd.Series, total_rows: int) -> bool:
+        """Identify columns that are constant, ID fields, or non-informative for analysis."""
+        if series.nunique(dropna=True) <= 1:
+            return True
+        if pd.api.types.is_numeric_dtype(series):
+            try:
+                if series.std(skipna=True) == 0:
+                    return True
+            except Exception:
+                pass
+        col_clean = col_name.strip().lower().replace('_', '')
+        if col_clean in ('employeecount', 'standardhours', 'over18'):
+            return True
+        if col_clean in ('employeenumber', 'employeeid', 'id', 'recordid'):
+            return True
+        if series.nunique(dropna=True) >= total_rows * 0.98 and total_rows > 20:
+            return True
+        return False
+
     @classmethod
     def get_correlation_matrix(cls, df: pd.DataFrame, method: str = 'pearson', min_corr: float = 0.0) -> Dict[str, Any]:
         numeric_df = df.select_dtypes(include=[np.number])
+        # Exclude constant & ID columns from correlation
+        total_rows = len(df)
+        useful_cols = [c for c in numeric_df.columns if not cls._is_irrelevant_column(c, numeric_df[c], total_rows)]
+        numeric_df = numeric_df[useful_cols]
         if numeric_df.empty or len(numeric_df.columns) < 2:
             return {"columns": [], "matrix": [], "top_correlations": []}
 

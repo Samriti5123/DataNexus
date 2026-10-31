@@ -60,11 +60,11 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-amber-400 flex items-center justify-center">
               <Code2 className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Automated Python ETL Pipeline Code</h2>
+              <h2 className="text-sm font-bold text-white">Auto-Generated Python Prep Script</h2>
               <p className="text-xs text-slate-400">
                 Reproducible Python script generated from your {recipe?.steps_count || 0} applied cleaning transformations
               </p>
@@ -80,9 +80,9 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({
         </div>
 
         {/* Code Content Box */}
-        <div className="relative rounded-xl bg-slate-950 border border-slate-800 p-4 font-mono text-xs text-emerald-300 max-h-[420px] overflow-y-auto">
+        <div className="relative rounded-2xl bg-slate-950 border border-slate-800 p-4 font-mono text-xs text-amber-300 max-h-[420px] overflow-y-auto">
           {loading ? (
-            <div className="text-slate-500 py-8 text-center">Synthesizing Python ETL recipe...</div>
+            <div className="text-slate-500 py-8 text-center">Writing the Python script...</div>
           ) : (
             <pre className="leading-relaxed whitespace-pre-wrap">{recipe?.script}</pre>
           )}
@@ -105,7 +105,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({
 
             <button
               onClick={handleDownload}
-              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow transition-colors"
+              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold shadow transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Download .py</span>

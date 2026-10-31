@@ -324,11 +324,11 @@ export const CleanView: React.FC<CleanViewProps> = ({
       {/* Header & Step Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-2">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-amber-400 text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Stage 2: Data Health Audit & Interactive Cleaning</span>
+            <span>Stage 2: Check Health & Prepare the Data</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Data Cleaning & Transformation Studio</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Data Preparation Workbench</h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Resolve missing values, clip extreme outliers, convert data types, and prepare your data for deep analysis.
           </p>
@@ -365,15 +365,15 @@ export const CleanView: React.FC<CleanViewProps> = ({
 
           <button
             onClick={onOpenRecipeModal}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-emerald-500/30 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/10 transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#10262C] border border-teal-500/30 text-amber-400 text-xs font-semibold hover:bg-teal-500/10 transition-colors"
           >
             <Code2 className="w-3.5 h-3.5" />
-            <span>Export Python ETL</span>
+            <span>Download Python Script</span>
           </button>
 
           <button
             onClick={onProceedToEda}
-            className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-900/30 transition-all hover:scale-[1.02]"
+            className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg bg-gradient-to-r from-teal-600 to-amber-600 hover:from-teal-500 hover:to-amber-500 text-white text-xs font-bold shadow-md shadow-teal-900/40 transition-all hover:scale-[1.02]"
           >
             <span>Proceed to EDA</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -388,9 +388,9 @@ export const CleanView: React.FC<CleanViewProps> = ({
           {/* Health Score Gauge */}
           <div className="glass-panel rounded-2xl p-5 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Data Quality Score</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Data Health Score</span>
               {audit.overall_score >= 85 ? (
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                <ShieldCheck className="w-5 h-5 text-amber-400" />
               ) : (
                 <ShieldAlert className="w-5 h-5 text-amber-400" />
               )}
@@ -428,7 +428,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center space-x-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white">Detected Data Quirks & Alerts</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-white">Data Issues Spotted</span>
               </div>
               <span className="text-xs text-slate-400">
                 {audit.issues.length} {audit.issues.length === 1 ? 'alert' : 'alerts'} detected
@@ -437,15 +437,15 @@ export const CleanView: React.FC<CleanViewProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-3 max-h-[140px] overflow-y-auto pr-1">
               {audit.issues.length === 0 ? (
-                <div className="col-span-2 flex items-center space-x-2 text-emerald-400 text-xs py-4">
+                <div className="col-span-2 flex items-center space-x-2 text-amber-400 text-xs py-4">
                   <Check className="w-4 h-4" />
-                  <span>No data quality issues found. Dataset is 100% complete and consistent.</span>
+                  <span>No problems found. The data is complete and consistent.</span>
                 </div>
               ) : (
                 audit.issues.map((issue, idx) => (
                   <div key={idx} className="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
                     <span className={`w-2 h-2 rounded-full mt-1 shrink-0 ${
-                      issue.severity === 'high' ? 'bg-rose-400' : issue.severity === 'medium' ? 'bg-amber-400' : 'bg-blue-400'
+                      issue.severity === 'high' ? 'bg-rose-400' : issue.severity === 'medium' ? 'bg-amber-400' : 'bg-teal-400'
                     }`} />
                     <span className="text-slate-300 leading-snug">{issue.message}</span>
                   </div>
@@ -454,28 +454,28 @@ export const CleanView: React.FC<CleanViewProps> = ({
             </div>
 
             <div className="flex items-center space-x-2 text-xs text-slate-400 bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-800/80">
-              <span className="font-semibold text-emerald-400">Tip:</span>
-              <span>Use the Cleaning Toolbox below to apply one-click transformations.</span>
+              <span className="font-semibold text-amber-400">Tip:</span>
+              <span>Use the Prep Toolkit below to apply one-click transformations.</span>
             </div>
           </div>
 
         </div>
       )}
 
-      {/* Main Workspace: Cleaning Toolbox (Left) + Interactive Data Table (Right) */}
+      {/* Main Workspace: Prep Toolkit (Left) + Interactive Data Table (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Cleaning Toolbox Controls */}
+        {/* Prep Toolkit Controls */}
         <div className="lg:col-span-4 space-y-4">
           
           <div className="glass-panel rounded-2xl p-5 space-y-4">
             <h2 className="text-sm font-bold text-white flex items-center space-x-2">
-              <Sliders className="w-4 h-4 text-emerald-400" />
-              <span>Cleaning Toolbox</span>
+              <Sliders className="w-4 h-4 text-amber-400" />
+              <span>Prep Toolkit</span>
             </h2>
 
             {/* Tool Selector Tabs */}
-            <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-900 rounded-xl border border-slate-800 text-[11px] font-medium">
+            <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-900 rounded-2xl border border-slate-800 text-[11px] font-medium">
               {[
                 { id: 'missing', label: 'Missing' },
                 { id: 'outliers', label: 'Outliers' },
@@ -490,7 +490,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   onClick={() => setActiveTool(t.id)}
                   className={`py-1.5 px-2 rounded-lg transition-colors ${
                     activeTool === t.id
-                      ? 'bg-emerald-600 text-white font-bold shadow'
+                      ? 'bg-teal-600 text-white font-bold shadow-md shadow-teal-900/30'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
@@ -517,7 +517,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             setMissingCols([...(preview?.columns || [])]);
                           }
                         }}
-                        className="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                        className="text-[10px] text-amber-400 hover:text-amber-300 font-semibold"
                       >
                         {missingCols.length === (preview?.columns.length || 0) ? 'Deselect All' : 'Select All'}
                       </button>
@@ -538,12 +538,12 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             }}
                             className={`px-2 py-1 rounded-md text-[11px] font-medium transition-all flex items-center space-x-1 ${
                               isSelected
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                                ? 'bg-teal-500/20 text-amber-300 border border-teal-500/40 shadow-sm'
                                 : 'bg-slate-950 text-slate-400 border border-slate-800 hover:border-slate-700'
                             }`}
                           >
                             <span>{c}</span>
-                            {isSelected && <Check className="w-3 h-3 text-emerald-400" />}
+                            {isSelected && <Check className="w-3 h-3 text-amber-400" />}
                           </button>
                         );
                       })}
@@ -558,7 +558,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                     <select
                       value={missingStrategy}
                       onChange={(e) => setMissingStrategy(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-teal-500"
                     >
                       <option value="mean">Impute with Mean (Numeric)</option>
                       <option value="median">Impute with Median (Numeric)</option>
@@ -587,7 +587,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyMissing}
                     disabled={loading}
-                    className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                    className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
                   >
                     {loading ? 'Processing...' : 'Apply Missing Value Fix'}
                   </button>
@@ -599,7 +599,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                 <div className="space-y-3 text-xs">
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="block text-slate-300 font-medium">Numeric Columns</label>
+                      <label className="block text-slate-300 font-medium">Number Columns</label>
                       <button
                         type="button"
                         onClick={() => {
@@ -609,7 +609,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             setOutlierCols([...numericColumns]);
                           }
                         }}
-                        className="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                        className="text-[10px] text-amber-400 hover:text-amber-300 font-semibold"
                       >
                         {outlierCols.length === numericColumns.length ? 'Deselect All' : 'Select All'}
                       </button>
@@ -634,12 +634,12 @@ export const CleanView: React.FC<CleanViewProps> = ({
                               }}
                               className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all flex items-center space-x-1 ${
                                 isSelected
-                                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                                  ? 'bg-teal-500/20 text-amber-300 border border-teal-500/40 shadow-sm'
                                   : 'bg-slate-950 text-slate-400 border border-slate-800 hover:border-slate-700 hover:text-slate-200'
                               }`}
                             >
                               <span>{c}</span>
-                              {isSelected && <Check className="w-3 h-3 text-emerald-400" />}
+                              {isSelected && <Check className="w-3 h-3 text-amber-400" />}
                             </button>
                           );
                         })
@@ -685,14 +685,14 @@ export const CleanView: React.FC<CleanViewProps> = ({
                       step="0.5"
                       value={outlierThreshold}
                       onChange={(e) => setOutlierThreshold(parseFloat(e.target.value))}
-                      className="w-full accent-emerald-500"
+                      className="w-full accent-teal-500"
                     />
                   </div>
 
                   <button
                     onClick={handleApplyOutliers}
                     disabled={loading || numericColumns.length === 0}
-                    className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors disabled:opacity-50"
+                    className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors disabled:opacity-50"
                   >
                     {loading ? 'Processing...' : `Apply Outlier Treatment (${outlierCols.length > 0 ? outlierCols.length + ' cols' : 'All Numeric'})`}
                   </button>
@@ -714,7 +714,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             setDedupSubset([...(preview?.columns || [])]);
                           }
                         }}
-                        className="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                        className="text-[10px] text-amber-400 hover:text-amber-300 font-semibold"
                       >
                         {dedupSubset.length === (preview?.columns.length || 0) ? 'Deselect All' : 'Select All'}
                       </button>
@@ -735,12 +735,12 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             }}
                             className={`px-2 py-1 rounded-md text-[11px] font-medium transition-all flex items-center space-x-1 ${
                               isSelected
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                ? 'bg-teal-500/20 text-amber-300 border border-teal-500/40'
                                 : 'bg-slate-950 text-slate-400 border border-slate-800 hover:border-slate-700'
                             }`}
                           >
                             <span>{c}</span>
-                            {isSelected && <Check className="w-3 h-3 text-emerald-400" />}
+                            {isSelected && <Check className="w-3 h-3 text-amber-400" />}
                           </button>
                         );
                       })}
@@ -765,7 +765,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyDeduplicate}
                     disabled={loading}
-                    className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                    className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
                   >
                     {loading ? 'Processing...' : 'Remove Duplicate Rows'}
                   </button>
@@ -807,7 +807,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyCast}
                     disabled={loading}
-                    className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                    className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
                   >
                     {loading ? 'Processing...' : 'Cast Data Type'}
                   </button>
@@ -830,7 +830,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             setNormCols([...textCols]);
                           }
                         }}
-                        className="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                        className="text-[10px] text-amber-400 hover:text-amber-300 font-semibold"
                       >
                         Select All Text
                       </button>
@@ -851,12 +851,12 @@ export const CleanView: React.FC<CleanViewProps> = ({
                             }}
                             className={`px-2 py-1 rounded-md text-[11px] font-medium transition-all flex items-center space-x-1 ${
                               isSelected
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                ? 'bg-teal-500/20 text-amber-300 border border-teal-500/40'
                                 : 'bg-slate-950 text-slate-400 border border-slate-800 hover:border-slate-700'
                             }`}
                           >
                             <span>{c}</span>
-                            {isSelected && <Check className="w-3 h-3 text-emerald-400" />}
+                            {isSelected && <Check className="w-3 h-3 text-amber-400" />}
                           </button>
                         );
                       })}
@@ -901,7 +901,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyNormalize}
                     disabled={loading}
-                    className="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                    className="w-full py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
                   >
                     {loading ? 'Processing...' : 'Normalize Text'}
                   </button>
@@ -966,7 +966,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyCalculatedCol}
                     disabled={loading || !calcColName}
-                    className="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors disabled:opacity-50"
+                    className="w-full py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors disabled:opacity-50"
                   >
                     {loading ? 'Processing...' : 'Create Column'}
                   </button>
@@ -1030,7 +1030,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                   <button
                     onClick={handleApplyFilter}
                     disabled={loading}
-                    className="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                    className="w-full py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
                   >
                     {loading ? 'Processing...' : 'Apply Filter'}
                   </button>
@@ -1049,7 +1049,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
               <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
                 {preview.action_history.map((act, i) => (
                   <div key={i} className="text-[11px] text-slate-300 flex items-center space-x-2 py-1 px-2 rounded bg-slate-900/60 border border-slate-800/60">
-                    <span className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold shrink-0">
+                    <span className="w-4 h-4 rounded-full bg-teal-500/20 text-amber-400 flex items-center justify-center text-[9px] font-bold shrink-0">
                       {i}
                     </span>
                     <span className="truncate">{act}</span>
@@ -1073,7 +1073,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search across all columns..."
-                className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+                className="w-full bg-slate-900 border border-slate-800 rounded-2xl pl-9 pr-4 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-teal-500"
               />
             </form>
 
@@ -1084,7 +1084,7 @@ export const CleanView: React.FC<CleanViewProps> = ({
           </div>
 
           {/* Table View */}
-          <div className="overflow-x-auto rounded-xl border border-slate-800 max-h-[500px]">
+          <div className="overflow-x-auto rounded-2xl border border-slate-800 max-h-[500px]">
             <table className="w-full text-left text-xs border-collapse">
               <thead className="sticky top-0 bg-slate-950 z-10">
                 <tr className="border-b border-slate-800 text-slate-400 font-medium">

@@ -117,12 +117,12 @@ export const UploadView: React.FC<UploadViewProps> = ({
       
       {/* Hero Header */}
       <div className="text-center max-w-3xl mx-auto pt-6 space-y-4">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-amber-400 text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Stage 1: Multi-Format Data Ingestion</span>
+          <span>Stage 1: Bring In Your Data</span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Turn Raw Data into <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Actionable Business Insights</span>
+          Turn Raw Data into <span className="bg-gradient-to-r from-teal-400 via-amber-300 to-teal-300 bg-clip-text text-transparent">Decision-Ready Findings</span>
         </h1>
         <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
           Upload any CSV, Excel, or JSON file — or select an enterprise sample dataset below to explore interactive automated cleaning, statistical profiling, chart studios, and C-suite AI reports.
@@ -138,8 +138,8 @@ export const UploadView: React.FC<UploadViewProps> = ({
           onClick={() => fileInputRef.current?.click()}
           className={`relative group cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-300 p-8 sm:p-12 text-center ${
             isDragging
-              ? 'border-emerald-400 bg-emerald-500/10 scale-[1.01]'
-              : 'border-slate-800 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-900/90'
+              ? 'border-amber-400 bg-teal-500/10 scale-[1.01]'
+              : 'border-[#24454D] hover:border-teal-500/50 bg-[#10262C]/60 hover:bg-[#10262C]/90'
           }`}
         >
           <input
@@ -151,7 +151,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
           />
 
           <div className="flex flex-col items-center justify-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-teal-600 to-amber-500 flex items-center justify-center shadow-lg shadow-teal-500/25 group-hover:scale-110 transition-transform">
               <Upload className="w-8 h-8 text-white" />
             </div>
             
@@ -178,10 +178,10 @@ export const UploadView: React.FC<UploadViewProps> = ({
       <div className="max-w-6xl mx-auto space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Database className="w-4 h-4 text-emerald-400" />
-            <h2 className="text-lg font-bold text-white">Or Test Drive with 1-Click Sample Datasets</h2>
+            <Database className="w-4 h-4 text-amber-400" />
+            <h2 className="text-lg font-bold text-white">Or try one of the ready-made sample files</h2>
           </div>
-          <span className="text-xs text-slate-400">Instant setup with real-world scenarios</span>
+          <span className="text-xs text-slate-400">Ready-made data to start right away</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -194,14 +194,14 @@ export const UploadView: React.FC<UploadViewProps> = ({
               <div
                 key={s.key}
                 onClick={() => handleLoadSample(s.key)}
-                className={`relative group cursor-pointer p-5 rounded-xl border transition-all duration-200 ${
+                className={`relative group cursor-pointer p-5 rounded-2xl border transition-all duration-200 ${
                   isCurrent
-                    ? 'bg-emerald-950/30 border-emerald-500/50 shadow-lg shadow-emerald-950/40'
-                    : 'bg-slate-900/70 border-slate-800/80 hover:border-slate-700 hover:bg-slate-800/60'
+                    ? 'bg-teal-950/40 border-teal-500/50 shadow-lg shadow-teal-950/40'
+                    : 'bg-[#10262C]/80 border-[#24454D] hover:border-teal-500/40 hover:bg-[#10262C]'
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-9 h-9 rounded-lg bg-slate-800 border border-slate-700/60 flex items-center justify-center text-emerald-400 group-hover:text-emerald-300 group-hover:scale-105 transition-all">
+                  <div className="w-9 h-9 rounded-lg bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-amber-400 group-hover:text-amber-300 group-hover:scale-105 transition-all">
                     <Icon className="w-5 h-5" />
                   </div>
                   <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800/80 text-slate-300 border border-slate-700">
@@ -209,7 +209,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   </span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                <h3 className="text-sm font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">
                   {s.name}
                 </h3>
                 <p className="text-xs text-slate-400 leading-relaxed mb-4">
@@ -220,7 +220,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   <span className="text-slate-500 font-medium">
                     {isCurrent ? 'Active Dataset' : 'Click to Load'}
                   </span>
-                  <div className="flex items-center space-x-1 text-emerald-400 font-semibold group-hover:translate-x-1 transition-transform">
+                  <div className="flex items-center space-x-1 text-amber-400 font-semibold group-hover:translate-x-1 transition-transform">
                     <span>{isLoading ? 'Loading...' : 'Launch'}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
@@ -233,8 +233,8 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
       {/* Raw Preview & Quick Proceed */}
       {activeSession && previewData && (
-        <div className="max-w-6xl mx-auto bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+        <div className="max-w-6xl mx-auto bg-[#10262C]/90 border border-[#24454D] rounded-2xl p-6 space-y-6 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#24454D] pb-4">
             <div>
               <div className="flex items-center space-x-2">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -247,15 +247,15 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
             <button
               onClick={onProceedToClean}
-              className="flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-emerald-900/30 transition-all hover:scale-[1.02]"
+              className="flex items-center justify-center space-x-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-teal-600 to-amber-600 hover:from-teal-500 hover:to-amber-500 text-white font-semibold text-xs sm:text-sm shadow-lg shadow-teal-900/40 transition-all hover:scale-[1.02]"
             >
-              <span>Proceed to Data Cleaning & Prep</span>
+              <span>Continue to Preparation</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Quick Table Preview */}
-          <div className="overflow-x-auto rounded-xl border border-slate-800">
+          <div className="overflow-x-auto rounded-2xl border border-slate-800">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-medium">

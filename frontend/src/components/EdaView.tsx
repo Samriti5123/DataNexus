@@ -103,11 +103,11 @@ export const EdaView: React.FC<EdaViewProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-2">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-amber-400 text-xs font-semibold mb-2">
             <BarChart3 className="w-3.5 h-3.5" />
-            <span>Stage 3: Exploratory Data Analysis (EDA)</span>
+            <span>Stage 3: Explore the Data</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Statistical & Structural Profiling</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Statistics & Structure Overview</h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Deep dive into distributions, skewness, Pearson/Spearman correlation matrices, and dynamic multidimensional pivots.
           </p>
@@ -115,9 +115,9 @@ export const EdaView: React.FC<EdaViewProps> = ({
 
         <button
           onClick={onProceedToVisualize}
-          className="flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-900/30 transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-teal-600 to-amber-600 hover:from-teal-500 hover:to-amber-500 text-white text-xs font-bold shadow-md shadow-teal-900/40 transition-all hover:scale-[1.02]"
         >
-          <span>Launch Chart Studio</span>
+          <span>Open Chart Studio</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -125,28 +125,28 @@ export const EdaView: React.FC<EdaViewProps> = ({
       {/* Overview Stat Cards */}
       {summary && (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          <div className="glass-panel rounded-xl p-4">
+          <div className="glass-panel rounded-2xl p-4">
             <span className="text-[11px] text-slate-400 font-medium">Total Rows</span>
             <div className="text-xl font-bold text-white mt-1">{summary.total_rows.toLocaleString()}</div>
           </div>
-          <div className="glass-panel rounded-xl p-4">
-            <span className="text-[11px] text-slate-400 font-medium">Attributes / Cols</span>
+          <div className="glass-panel rounded-2xl p-4">
+            <span className="text-[11px] text-slate-400 font-medium">Fields</span>
             <div className="text-xl font-bold text-white mt-1">{summary.total_columns}</div>
           </div>
-          <div className="glass-panel rounded-xl p-4">
+          <div className="glass-panel rounded-2xl p-4">
             <span className="text-[11px] text-slate-400 font-medium">Memory Usage</span>
-            <div className="text-xl font-bold text-emerald-400 mt-1">{summary.memory_usage_mb} MB</div>
+            <div className="text-xl font-bold text-amber-400 mt-1">{summary.memory_usage_mb} MB</div>
           </div>
-          <div className="glass-panel rounded-xl p-4">
+          <div className="glass-panel rounded-2xl p-4">
             <span className="text-[11px] text-slate-400 font-medium">Missing Cells</span>
             <div className="text-xl font-bold text-white mt-1">{summary.missing_cells} <span className="text-xs text-slate-400 font-normal">({summary.missing_percentage}%)</span></div>
           </div>
-          <div className="glass-panel rounded-xl p-4">
-            <span className="text-[11px] text-slate-400 font-medium">Numeric Columns</span>
-            <div className="text-xl font-bold text-cyan-400 mt-1">{summary.type_counts.numeric}</div>
+          <div className="glass-panel rounded-2xl p-4">
+            <span className="text-[11px] text-slate-400 font-medium">Number Columns</span>
+            <div className="text-xl font-bold text-amber-400 mt-1">{summary.type_counts.numeric}</div>
           </div>
-          <div className="glass-panel rounded-xl p-4">
-            <span className="text-[11px] text-slate-400 font-medium">Categorical Columns</span>
+          <div className="glass-panel rounded-2xl p-4">
+            <span className="text-[11px] text-slate-400 font-medium">Text Columns</span>
             <div className="text-xl font-bold text-purple-400 mt-1">{summary.type_counts.categorical}</div>
           </div>
         </div>
@@ -156,9 +156,9 @@ export const EdaView: React.FC<EdaViewProps> = ({
       <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
         <button
           onClick={() => setActiveTab('profiles')}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+          className={`flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold transition-colors ${
             activeTab === 'profiles'
-              ? 'bg-emerald-600 text-white shadow'
+              ? 'bg-teal-600 text-white shadow-md shadow-teal-900/30 font-semibold'
               : 'bg-slate-900 text-slate-400 hover:text-white'
           }`}
         >
@@ -168,26 +168,26 @@ export const EdaView: React.FC<EdaViewProps> = ({
 
         <button
           onClick={() => setActiveTab('correlations')}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+          className={`flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold transition-colors ${
             activeTab === 'correlations'
-              ? 'bg-emerald-600 text-white shadow'
+              ? 'bg-teal-600 text-white shadow-md shadow-teal-900/30 font-semibold'
               : 'bg-slate-900 text-slate-400 hover:text-white'
           }`}
         >
           <Flame className="w-4 h-4" />
-          <span>Correlation Matrix & Heatmap</span>
+          <span>Relationship Matrix & Heatmap</span>
         </button>
 
         <button
           onClick={() => setActiveTab('pivot')}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+          className={`flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs font-bold transition-colors ${
             activeTab === 'pivot'
-              ? 'bg-emerald-600 text-white shadow'
+              ? 'bg-teal-600 text-white shadow-md shadow-teal-900/30 font-semibold'
               : 'bg-slate-900 text-slate-400 hover:text-white'
           }`}
         >
           <Grid className="w-4 h-4" />
-          <span>Dynamic Pivot & GroupBy Sandbox</span>
+          <span>Pivot & Group-By Playground</span>
         </button>
       </div>
 
@@ -210,7 +210,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
                     </h3>
                     <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
                       p.semantic_type === 'numeric'
-                        ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                        ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                         : p.semantic_type === 'categorical'
                         ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
                         : p.semantic_type === 'datetime'
@@ -251,14 +251,14 @@ export const EdaView: React.FC<EdaViewProps> = ({
 
                     {/* Mini Histogram Bars */}
                     <div className="space-y-1">
-                      <span className="text-[10px] text-slate-400 font-medium">Distribution Histogram</span>
+                      <span className="text-[10px] text-slate-400 font-medium">Value Spread Histogram</span>
                       <div className="h-16 flex items-end space-x-1 pt-2 bg-slate-950/60 p-2 rounded-lg border border-slate-800/60">
                         {p.stats.histogram.map((bin, i) => {
                           const heightPct = Math.round((bin.count / maxHistCount) * 100);
                           return (
                             <div
                               key={i}
-                              className="flex-1 bg-gradient-to-t from-emerald-600 to-teal-400 hover:from-emerald-400 hover:to-teal-300 rounded-t transition-all cursor-pointer relative group"
+                              className="flex-1 bg-gradient-to-t from-teal-600 to-amber-400 hover:from-teal-400 hover:to-amber-300 rounded-t transition-all cursor-pointer relative group"
                               style={{ height: `${Math.max(4, heightPct)}%` }}
                             >
                               <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-1.5 py-0.5 rounded shadow whitespace-nowrap z-20 pointer-events-none border border-slate-700">
@@ -275,7 +275,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
                 {/* Categorical Profiling (Top Values Bar) */}
                 {isCategorical && p.top_values && (
                   <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                    <span className="text-[10px] text-slate-400 font-medium">Top Frequency Categories</span>
+                    <span className="text-[10px] text-slate-400 font-medium">Most Common Categories</span>
                     <div className="space-y-1.5 max-h-32 overflow-y-auto pr-1">
                       {p.top_values.slice(0, 5).map((val, idx) => (
                         <div key={idx} className="space-y-0.5 text-[11px]">
@@ -319,7 +319,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
         </div>
       )}
 
-      {/* TAB 2: Correlation Matrix & Heatmap */}
+      {/* TAB 2: Relationship Matrix & Heatmap */}
       {activeTab === 'correlations' && correlations && (
         <div className="space-y-6">
           
@@ -329,7 +329,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
               <button
                 onClick={() => setCorrMethod('pearson')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
-                  corrMethod === 'pearson' ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-400'
+                  corrMethod === 'pearson' ? 'bg-teal-600 text-white' : 'bg-slate-900 text-slate-400'
                 }`}
               >
                 Pearson (Linear)
@@ -337,7 +337,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
               <button
                 onClick={() => setCorrMethod('spearman')}
                 className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
-                  corrMethod === 'spearman' ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-400'
+                  corrMethod === 'spearman' ? 'bg-teal-600 text-white' : 'bg-slate-900 text-slate-400'
                 }`}
               >
                 Spearman (Rank)
@@ -395,18 +395,18 @@ export const EdaView: React.FC<EdaViewProps> = ({
             <div className="lg:col-span-4 glass-panel rounded-2xl p-5 space-y-3">
               <h3 className="text-sm font-bold text-white flex items-center space-x-2">
                 <Flame className="w-4 h-4 text-amber-400" />
-                <span>Top Correlated Pairs</span>
+                <span>Strongest Relationships</span>
               </h3>
 
               <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
                 {correlations.top_correlations.slice(0, 8).map((pair, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs space-y-1">
+                  <div key={i} className="p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-white truncate max-w-[180px]">
                         {pair.col1} ↔ {pair.col2}
                       </span>
                       <span className={`font-mono font-bold ${
-                        pair.correlation > 0 ? 'text-emerald-400' : 'text-rose-400'
+                        pair.correlation > 0 ? 'text-amber-400' : 'text-rose-400'
                       }`}>
                         {pair.correlation > 0 ? '+' : ''}{pair.correlation}
                       </span>
@@ -492,7 +492,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
               <button
                 onClick={handleRunPivot}
                 disabled={pivotLoading}
-                className="py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-colors"
+                className="py-2 px-4 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow transition-colors"
               >
                 {pivotLoading ? 'Calculating...' : 'Compute Pivot Table'}
               </button>
@@ -511,7 +511,7 @@ export const EdaView: React.FC<EdaViewProps> = ({
                 </span>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-slate-800 max-h-[400px]">
+              <div className="overflow-x-auto rounded-2xl border border-slate-800 max-h-[400px]">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead className="sticky top-0 bg-slate-950 z-10">
                     <tr className="border-b border-slate-800 text-slate-400 font-medium">

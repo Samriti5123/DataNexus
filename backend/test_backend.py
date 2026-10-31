@@ -102,7 +102,7 @@ def test_report_generation():
     insights = InsightsService.generate_business_insights(df)
     html = ReportService.generate_html_report("Superstore Sales", df, eda_sum, health, insights)
     assert "<!DOCTYPE html>" in html
-    assert "DataLens Executive Intelligence Report" in html
+    assert "DataNexus Executive Intelligence Report" in html
 
 if __name__ == '__main__':
     print("Running backend tests...")

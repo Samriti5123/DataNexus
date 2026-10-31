@@ -19,7 +19,14 @@ const RAW_BASE = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const API_BASE = RAW_BASE ? `${RAW_BASE.replace(/\/$/, '')}/api` : '/api';
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${url}`, options);
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${url}`, options);
+  } catch (netErr: any) {
+    throw new Error(
+      `Unable to connect to DataNexus backend (${API_BASE}). Please check that the server is running on http://127.0.0.1:8000.`
+    );
+  }
   if (!res.ok) {
     let errorDetail = 'Request failed';
     try {
@@ -184,6 +191,9 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query })
     }),
+
+  getSuggestionChips: (sessionId: string) =>
+    fetchJson<{ suggestions: string[] }>(`/insights/suggestions/${sessionId}`),
 
   // Export URLs
   getCsvExportUrl: (sessionId: string) => `${API_BASE}/export/csv/${sessionId}`,

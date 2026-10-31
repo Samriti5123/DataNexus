@@ -198,4 +198,8 @@ export interface QueryResponse {
   data: Record<string, any>[];
   total_results: number;
   suggested_chart?: ChartDataResponse | null;
+  explanation?: string;
+  error?: string;
+  supported_types?: string[];
+  examples?: string[];
 }

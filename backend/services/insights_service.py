@@ -4,6 +4,25 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from typing import Dict, Any, List, Optional
 
+def is_irrelevant_or_id_or_constant(col_name: str, series: pd.Series, total_rows: int) -> bool:
+    """Identify columns that are constant, ID fields, or non-informative for analysis."""
+    if series.nunique(dropna=True) <= 1:
+        return True
+    if pd.api.types.is_numeric_dtype(series):
+        try:
+            if series.std(skipna=True) == 0:
+                return True
+        except Exception:
+            pass
+    col_clean = col_name.strip().lower().replace('_', '')
+    if col_clean in ['employeecount', 'standardhours', 'over18']:
+        return True
+    if col_clean in ['employeenumber', 'employeeid', 'id', 'recordid']:
+        return True
+    if series.nunique(dropna=True) >= total_rows * 0.98 and total_rows > 20:
+        return True
+    return False
+
 class InsightsService:
 
     @classmethod
@@ -17,21 +36,22 @@ class InsightsService:
 
         # 1. Detect or validate target column
         if not target_col or target_col not in df.columns:
-            # Smart detection of target candidate
-            candidates = ['profit', 'sales', 'churn', 'revenue', 'income', 'attrition', 'amount', 'risk_score', 'rating']
+            # Smart detection of target candidate (prioritize attrition/churn targets)
+            candidates = ['attrition', 'churn', 'profit', 'sales', 'revenue', 'income', 'risk_score', 'amount', 'rating']
             found_target = None
             for cand in candidates:
                 for col in df.columns:
-                    if cand in col.lower():
+                    if cand == col.lower() or cand in col.lower():
                         found_target = col
                         break
                 if found_target:
                     break
             target_col = found_target or (numeric_cols[0] if numeric_cols else df.columns[0])
 
-        # 2. Executive KPI Highlights
+        # 2. Executive KPI Highlights (exclude constant & ID fields)
         kpis = []
-        for col in numeric_cols[:4]:
+        meaningful_numeric = [c for c in numeric_cols if not is_irrelevant_or_id_or_constant(c, df[c], total_rows)]
+        for col in meaningful_numeric[:4]:
             series = df[col].dropna()
             if len(series) > 0:
                 total_val = float(series.sum())
@@ -59,8 +79,11 @@ class InsightsService:
         is_target_numeric = target_col in numeric_cols
 
         try:
-            # Prepare feature matrix
-            feature_cols = [c for c in df.columns if c != target_col and df[c].nunique() > 1 and df[c].nunique() < total_rows * 0.95]
+            # Prepare feature matrix excluding constant columns and ID columns
+            feature_cols = [
+                c for c in df.columns 
+                if c != target_col and not is_irrelevant_or_id_or_constant(c, df[c], total_rows)
+            ]
             if len(feature_cols) >= 1 and total_rows >= 10:
                 X = pd.DataFrame()
                 for c in feature_cols:
@@ -107,7 +130,7 @@ class InsightsService:
         except Exception as e:
             # Fallback correlation
             if is_target_numeric:
-                for c in numeric_cols:
+                for c in meaningful_numeric:
                     if c != target_col:
                         corr_val = df[[c, target_col]].corr().iloc[0, 1]
                         if not np.isnan(corr_val):
@@ -122,7 +145,7 @@ class InsightsService:
 
         # 4. Anomaly & Risk Alerts
         anomalies = []
-        for col in numeric_cols:
+        for col in meaningful_numeric:
             series = df[col].dropna()
             if len(series) > 10:
                 q25 = series.quantile(0.25)
@@ -148,13 +171,12 @@ class InsightsService:
                             "message": f"Detected {len(extreme_low)} extreme negative/low outliers in '{col}' down to {extreme_low.min():,.2f}."
                         })
 
-        # Segment breakdown for top categorical columns.
-        # Pick columns that are actually usable for cohorting (a handful of
-        # distinct groups) instead of blindly taking the first 2 text columns,
-        # which are often high-cardinality fields like names/IDs that produce
-        # no useful cohorts and leave this section empty.
+        # Segment breakdown for top categorical columns
         cohort_insights = []
-        cohort_candidates = [c for c in cat_cols if 2 <= df[c].nunique() <= 12]
+        cohort_candidates = [
+            c for c in cat_cols 
+            if 2 <= df[c].nunique() <= 12 and not is_irrelevant_or_id_or_constant(c, df[c], total_rows)
+        ]
         for cat in cohort_candidates[:2]:
             if is_target_numeric:
                 grp = df.groupby(cat)[target_col].agg(['mean', 'sum', 'count']).reset_index()
@@ -177,6 +199,32 @@ class InsightsService:
                         "count": int(bottom_segment['count'])
                     }
                 })
+            else:
+                pos_val = 'yes' if (df[target_col].astype(str).str.lower() == 'yes').any() else str(df[target_col].dropna().iloc[0])
+                grp_rows = []
+                for val, g in df.groupby(cat):
+                    mean_val = (g[target_col].astype(str).str.lower() == pos_val.lower()).mean() * 100
+                    sum_val = (g[target_col].astype(str).str.lower() == pos_val.lower()).sum()
+                    grp_rows.append({'name': str(val), 'mean': mean_val, 'sum': sum_val, 'count': len(g)})
+                if grp_rows:
+                    grp_df = pd.DataFrame(grp_rows).sort_values(by='mean', ascending=False)
+                    top_segment = grp_df.iloc[0]
+                    bottom_segment = grp_df.iloc[-1]
+                    cohort_insights.append({
+                        "category_dimension": cat,
+                        "top_performer": {
+                            "name": str(top_segment['name']),
+                            "mean_value": round(float(top_segment['mean']), 1),
+                            "total_volume": int(top_segment['sum']),
+                            "count": int(top_segment['count'])
+                        },
+                        "bottom_performer": {
+                            "name": str(bottom_segment['name']),
+                            "mean_value": round(float(bottom_segment['mean']), 1),
+                            "total_volume": int(bottom_segment['sum']),
+                            "count": int(bottom_segment['count'])
+                        }
+                    })
 
         # 5. Executive Strategic Recommendations
         recommendations = []

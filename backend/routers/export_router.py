@@ -19,7 +19,7 @@ def get_valid_session(session_id: str):
 def export_csv(session_id: str):
     session = get_valid_session(session_id)
     csv_bytes = session.current_df.to_csv(index=False).encode('utf-8')
-    filename = f"DataLens_Cleaned_{session.name.replace(' ', '_')}.csv"
+    filename = f"DataNexus_Cleaned_{session.name.replace(' ', '_')}.csv"
     
     return Response(
         content=csv_bytes,
@@ -35,7 +35,7 @@ def export_excel(session_id: str):
         session.current_df.to_excel(buffer, index=False, engine='openpyxl')
         excel_bytes = buffer.getvalue()
         
-    filename = f"DataLens_Cleaned_{session.name.replace(' ', '_')}.xlsx"
+    filename = f"DataNexus_Cleaned_{session.name.replace(' ', '_')}.xlsx"
     return Response(
         content=excel_bytes,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

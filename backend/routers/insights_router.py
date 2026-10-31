@@ -25,9 +25,15 @@ def get_business_insights(session_id: str, target_column: Optional[str] = Query(
     return insights
 
 @router.post("/query/{session_id}")
-def ask_datalens_ai(session_id: str, req: QueryReq):
+def ask_datanexus_ai(session_id: str, req: QueryReq):
     session = get_valid_session(session_id)
     res = QueryService.execute_query(session.current_df, req.query)
     if "error" in res:
         raise HTTPException(status_code=400, detail=res["error"])
     return res
+
+@router.get("/suggestions/{session_id}")
+def get_suggestion_chips(session_id: str):
+    session = get_valid_session(session_id)
+    chips = QueryService.get_suggestion_chips(session.current_df)
+    return {"suggestions": chips}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, TabType } from './components/Navbar';
+import { Navbar, Sidebar, TabType } from './components/Navbar';
 import { UploadView } from './components/UploadView';
 import { CleanView } from './components/CleanView';
 import { EdaView } from './components/EdaView';
@@ -58,7 +58,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500/30 selection:text-emerald-300">
+    <div className="min-h-screen bg-[#0A1A1F] text-[#F8FAFC] flex flex-col selection:bg-teal-500/30 selection:text-teal-300">
       
       {/* Top Navbar */}
       <Navbar
@@ -70,8 +70,11 @@ export function App() {
         onExportReport={handleExportReport}
       />
 
+      <div className="flex flex-1">
+      <Sidebar currentTab={currentTab} onTabChange={setCurrentTab} activeSession={activeSession} />
+      <div className="flex-1 min-w-0 flex flex-col">
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {currentTab === 'upload' && (
           <UploadView
             samples={samples}
@@ -118,12 +121,14 @@ export function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-[#24454D] bg-[#0A1A1F]/80 py-6 text-center text-xs text-slate-400">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>DataLens – Interactive Data Analysis & Business Intelligence Platform</span>
+          <span>DataNexus · HR attrition analysis made simple</span>
           <span>FastAPI • Pandas • Scikit-Learn • React 19 • Vite • TailwindCSS</span>
         </div>
       </footer>
+      </div>
+      </div>
 
       {/* Modals & Toast */}
       {activeSession && (
