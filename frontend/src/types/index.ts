@@ -202,4 +202,7 @@ export interface QueryResponse {
   error?: string;
   supported_types?: string[];
   examples?: string[];
+  engine?: string;
+  applied_filters?: string[];
+  answer?: string;
 }

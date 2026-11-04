@@ -348,6 +348,46 @@ class QueryService:
 
     @classmethod
     def execute_query(cls, df: pd.DataFrame, query_str: str) -> Dict[str, Any]:
+        """Hybrid question-answering system combining:
+        1. New NLP-based Question Understanding System (Primary)
+        2. Existing Deterministic Rule-Based System (Fallback)
+        """
+        raw_q = query_str.strip()
+        if not raw_q:
+            return {"error": "Query string cannot be empty."}
+
+        # -------------------------------------------------------------
+        # 1. PRIMARY: NLP-Based Query Understanding Engine
+        # -------------------------------------------------------------
+        try:
+            from backend.services.nlp_query_service import NLPQueryEngine
+            nlp_engine = NLPQueryEngine(df)
+            nlp_res = nlp_engine.process_query(raw_q)
+            if nlp_res is not None:
+                # Successfully understood and calculated by NLP engine.
+                # If zero matching rows are found, return it directly without falling back.
+                nlp_res["engine"] = "nlp"
+                return nlp_res
+        except Exception:
+            # Graceful failover: if any unexpected error occurs in NLP parsing,
+            # fall back safely to the deterministic rule-based engine.
+            pass
+
+        # -------------------------------------------------------------
+        # 2. FALLBACK: Existing Rule-Based System
+        # -------------------------------------------------------------
+        rule_res = cls._execute_rule_based(df, raw_q)
+        if rule_res is not None:
+            if rule_res.get("engine") is None and "couldn't understand" not in rule_res.get("interpretation", "").lower():
+                rule_res["engine"] = "rule_based"
+                if "answer" not in rule_res:
+                    rule_res["answer"] = rule_res.get("explanation", "")
+            return rule_res
+
+        return _friendly_fallback(df)
+
+    @classmethod
+    def _execute_rule_based(cls, df: pd.DataFrame, query_str: str) -> Dict[str, Any]:
         """Parse natural language query and execute deterministic rule-based analysis."""
         raw_q = query_str.strip()
         if not raw_q:

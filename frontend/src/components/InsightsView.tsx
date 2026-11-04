@@ -313,18 +313,55 @@ export const InsightsView: React.FC<InsightsViewProps> = ({
         {/* Query Result Output */}
         {queryResult && (
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 animate-in fade-in duration-300">
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between flex-wrap gap-2">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase text-amber-400">Interpretation</span>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-bold uppercase text-amber-400">Interpretation</span>
+                  {queryResult.engine === 'nlp' && (
+                    <span className="px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 text-[10px] font-semibold flex items-center gap-1">
+                      <Sparkles className="w-2.5 h-2.5" /> NLP Engine
+                    </span>
+                  )}
+                  {queryResult.engine === 'rule_based' && (
+                    <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px] font-semibold">
+                      Rule-Based Fallback
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs text-slate-200 font-semibold">{queryResult.interpretation}</p>
               </div>
-              <span className="text-[11px] text-slate-500">{queryResult.total_results} matching records</span>
+              <span className="text-[11px] text-slate-400 font-medium bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/50">
+                {queryResult.total_results.toLocaleString()} matching records
+              </span>
             </div>
 
-            {/* Explanation Sentence */}
-            {queryResult.explanation && (
-              <div className="p-3 rounded-lg bg-teal-500/10 border border-teal-500/20">
-                <p className="text-xs text-amber-300 font-medium">{queryResult.explanation}</p>
+            {/* Applied Filters Tags */}
+            {queryResult.applied_filters && queryResult.applied_filters.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <span className="text-[10px] uppercase font-bold text-slate-500">Applied Filters:</span>
+                {queryResult.applied_filters.map((flt, idx) => (
+                  <span key={idx} className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-teal-300 text-[11px] font-mono">
+                    {flt}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Answer in Simple English */}
+            {queryResult.answer && (
+              <div className="p-3.5 rounded-xl bg-gradient-to-r from-teal-500/15 via-teal-500/10 to-transparent border border-teal-500/30 flex items-start gap-2.5">
+                <Sparkles className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-teal-300 tracking-wider">Answer</span>
+                  <p className="text-xs sm:text-sm text-white font-medium mt-0.5 leading-relaxed">{queryResult.answer}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Explanation / Context */}
+            {queryResult.explanation && queryResult.explanation !== queryResult.answer && (
+              <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                <p className="text-xs text-slate-300 font-normal leading-relaxed">{queryResult.explanation}</p>
               </div>
             )}
 
